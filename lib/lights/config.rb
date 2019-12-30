@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require 'lights/userlist'
 require 'lights/hobject'
 
 class HueConfig < HObject
   attr_reader :name, :zigbee_channel, :mac, :dhcp,
-                :ip_address, :netmask, :gateway,
-                :proxy_address, :proxy_port, :utc,
-                :local_time, :time_zone, :whitelist,
-                :swversion, :api_version, :sw_update,
-                :link_button, :portal_services,
-                :portal_connection, :portal_state
+              :ip_address, :netmask, :gateway,
+              :proxy_address, :proxy_port, :utc,
+              :local_time, :time_zone, :whitelist,
+              :swversion, :api_version, :sw_update,
+              :link_button, :portal_services,
+              :portal_connection, :portal_state
   def initialize(data = {})
     @name = data["name"]
     @zigbee_channel = data["zigbeechannel"]
@@ -57,4 +59,3 @@ class HueConfig < HObject
     data
   end
 end
-

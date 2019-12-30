@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Group do
   let(:data) { JSON.parse(file_fixture('spec/fixtures/groups.json').read)['1'] }
   let(:group) { Group.new 1, data }
@@ -6,7 +8,7 @@ describe Group do
     expect(group.id).to eql 1
     expect(group.name).to eql "Ceiling light"
     expect(group.type).to eql "LightGroup"
-    expect(group.lights).to eql ["1", "2", "3", "4"]
+    expect(group.lights).to eql %w[1 2 3 4]
   end
 
   it "properly reconstucts object hash" do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe GroupState do
   let(:data) do
     {
@@ -28,4 +30,3 @@ describe GroupState do
     end
   end
 end
-

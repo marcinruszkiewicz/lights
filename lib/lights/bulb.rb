@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'lights/bulbstate'
 require 'lights/hobject'
 
 class Bulb < HObject
   attr_reader :id, :name, :type, :sw_version, :state,
-                :point_symbol, :model_id, :unique_id
+              :point_symbol, :model_id, :unique_id
   attr_writer :name, :state
-  def initialize(id,data = {})
+  def initialize(id, data = {})
     @id = id
     @name = data["name"]
     @type = data["type"]
@@ -28,4 +30,3 @@ class Bulb < HObject
     data
   end
 end
-

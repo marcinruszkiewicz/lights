@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 describe Rule do
   let(:data) do
     {
-      "name" => "test name",
+      "name" => "test name"
     }
   end
   let(:rule) { Rule.new 1, data }

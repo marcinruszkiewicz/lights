@@ -1,13 +1,18 @@
+# frozen_string_literal: true
+
 require 'lights/bulbstate'
 
 class GroupState < BulbState
   attr_reader :scene
-  def initialize(data={})
+  def initialize(data = {})
     super(data)
     set_scene data["scene"] if data["scene"]
   end
 
-  def scene=(value) set_scene(value) end
+  def scene=(value)
+    set_scene(value)
+  end
+
   def set_scene(value)
     if value.class == String
       @scene = value

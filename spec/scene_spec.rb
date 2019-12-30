@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 describe Scene do
   let(:data) do
     {
       "name" => "test name",
-      "lights" => ["1", "2", "3"],
+      "lights" => %w[1 2 3],
       "active" => true
     }
   end
@@ -11,7 +13,7 @@ describe Scene do
   it "properly parse input parameters" do
     expect(scene.name).to eql "test name"
     expect(scene.id).to eql 1
-    expect(scene.lights).to eql ["1","2","3"]
+    expect(scene.lights).to eql %w[1 2 3]
     expect(scene.active).to eql true
   end
 

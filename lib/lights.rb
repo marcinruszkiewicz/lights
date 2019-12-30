@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'net/http'
 require 'uri'
@@ -10,13 +11,12 @@ require 'lights/datastore'
 require 'lights/groupstate'
 require 'lights/loggerconfig'
 
-class Lights 
-
+class Lights
   attr_reader :bulbs, :username
-  def initialize(ip,username=nil)
-    @ip = ip 
+  def initialize(ip, username = nil)
+    @ip = ip
     @username = username
-    @http = Net::HTTP.new(ip,80)
+    @http = Net::HTTP.new(ip, 80)
     @bulbs = []
     @groups = []
     @bridges = []
@@ -25,26 +25,26 @@ class Lights
   end
 
   def discover_hubs
-    http = Net::HTTP.new("www.meethue.com",443)
+    http = Net::HTTP.new("www.meethue.com", 443)
     http.use_ssl = true
-    request = Net::HTTP::Get.new( "/api/nupnp" )
+    request = Net::HTTP::Get.new("/api/nupnp")
     response = http.request request
-    
+
     case response.code.to_i
     when 200
-      result = JSON.parse( response.body )
-      result.each { |b| @bridges << Bridge.new(b) } 
+      result = JSON.parse(response.body)
+      result.each { |b| @bridges << Bridge.new(b) }
     else
-      raise "Unknown error" 
+      raise "Unknown error"
     end
     @bridges
   end
 
   def register
-    data = { "devicetype"=>"lights" }
+    data = { "devicetype" => "lights" }
     response = @http.post "/api", data.to_json
     result = JSON.parse(response.body).first
-    if result.has_key? "error"
+    if result.key? "error"
       process_error result
     elsif result["success"]
       @username = result["success"]["username"]
@@ -53,14 +53,10 @@ class Lights
   end
 
   # backwards compatibility
-  alias_method :register_username, :register
+  alias register_username register
 
-  def request_config
-    get "config"
-  end
-
-  def add_bulb(id,bulb_data)
-    @bulbs << Bulb.new( id, bulb_data )
+  def add_bulb(id, bulb_data)
+    @bulbs << Bulb.new(id, bulb_data)
   end
 
   def search_new
@@ -79,19 +75,19 @@ class Lights
     get "sensors/new"
   end
 
-  def request_bulb_info( id )
+  def request_bulb_info(id)
     response = get "lights/#{id}"
-    Bulb.new(id,response)
+    Bulb.new(id, response)
   end
 
-  def request_group_info( id )
+  def request_group_info(id)
     response = get "groups/#{id}"
-    Group.new(id,response)
+    Group.new(id, response)
   end
 
-  def request_sensor_info( id )
+  def request_sensor_info(id)
     response = get "sensors/#{id}"
-    Sensor.new(id,response)
+    Sensor.new(id, response)
   end
 
   def request_sensor_list
@@ -109,7 +105,7 @@ class Lights
   def request_scene_list
     get "scenes"
   end
-  
+
   def request_config
     get "config"
   end
@@ -126,43 +122,44 @@ class Lights
     get ""
   end
 
-  def set_bulb_state( id, state )
+  def set_bulb_state(id, state)
     put "lights/#{id}/state", state
   end
 
-  def set_group_state( id, state )
+  def set_group_state(id, state)
     put "groups/#{id}/action", state
   end
 
-  def create_group( group )
+  def create_group(group)
     post "groups", group
   end
 
-  def create_scene( scene )
+  def create_scene(scene)
     post "scenes/#{scene.id}", scene
   end
 
-  def delete_scene( id )
+  def delete_scene(id)
     delete "scenes/#{id}"
   end
 
-  def delete_group( id )
+  def delete_group(id)
     delete "groups/#{id}"
   end
 
-  def edit_bulb( bulb )
+  def edit_bulb(bulb)
     put "lights/#{bulb.id}", bulb
   end
 
-  def edit_group( group )
+  def edit_group(group)
     put "groups/#{group.id}", group
   end
 
-  def delete_user( username )
+  def delete_user(username)
     delete "config/whitelist/#{username}"
   end
 
-private
+  private
+
   def process_error(result)
     type = result["error"]["type"]
     case type
@@ -177,65 +174,59 @@ private
     when 403
       raise SceneLockedException, result["error"]["description"]
     else
-      raise "Unknown Error: #{result["error"]["description"]}"
+      raise "Unknown Error: #{result['error']['description']}"
     end
   end
 
-  def get( path )
+  def get(path)
     @logger.debug "==> GET: #{path}"
     raise UsernameException unless @username
-    request = Net::HTTP::Get.new( "/api/#{@username}/#{path}" )
+
+    request = Net::HTTP::Get.new("/api/#{@username}/#{path}")
     response = @http.request request
-    result = JSON.parse( response.body )
+    result = JSON.parse(response.body)
     @logger.debug "<== #{response.code}"
     @logger.debug response.body
-    if result.first.kind_of?(Hash) && result.first.has_key?("error")
-      process_error result.first
-    end
+    process_error result.first if result.first.is_a?(Hash) && result.first.key?("error")
     result
   end
 
-  def put( path, data={} )
+  def put(path, data = {})
     @logger.debug "==> PUT: #{path}"
     raise UsernameException unless @username
-    @logger.debug data.to_json 
-    response = @http.put( "/api/#{@username}/#{path}", data.to_json )
-    result = JSON.parse( response.body )
+
+    @logger.debug data.to_json
+    response = @http.put("/api/#{@username}/#{path}", data.to_json)
+    result = JSON.parse(response.body)
     @logger.debug "<== #{response.code}"
     @logger.debug response.body
-    if result.first.kind_of?(Hash) && result.first.has_key?("error")
-      process_error result.first
-    end
+    process_error result.first if result.first.is_a?(Hash) && result.first.key?("error")
     result
   end
 
-  def post( path, data={} )
+  def post(path, data = {})
     @logger.debug "==> POST: #{path}"
     raise UsernameException unless @username
+
     @logger.debug data.to_json
-    response = @http.post( "/api/#{@username}/#{path}", data.to_json )
-    result = JSON.parse( response.body )
+    response = @http.post("/api/#{@username}/#{path}", data.to_json)
+    result = JSON.parse(response.body)
     @logger.debug "<== #{response.code}"
     @logger.debug response.body
-    if result.first.kind_of?(Hash) && result.first.has_key?("error")
-      process_error result.first
-    end
+    process_error result.first if result.first.is_a?(Hash) && result.first.key?("error")
     result
   end
 
-  def delete( path )
+  def delete(path)
     @logger.debug "==> DELETE: #{path}"
     raise UsernameException unless @username
-    request = Net::HTTP::Delete.new( "/api/#{@username}/#{path}" )
+
+    request = Net::HTTP::Delete.new("/api/#{@username}/#{path}")
     response = @http.request request
-    result = JSON.parse( response.body )
+    result = JSON.parse(response.body)
     @logger.debug "<== #{response.code}"
     @logger.debug response.body
-    if result.first.kind_of?(Hash) && result.first.has_key?("error")
-      process_error result.first
-    end
+    process_error result.first if result.first.is_a?(Hash) && result.first.key?("error")
     result
   end
-
 end
-

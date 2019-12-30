@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'lights/hobject'
 
 class Command < HObject
@@ -16,4 +18,3 @@ class Command < HObject
     data
   end
 end
-

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe Datastore do
   let(:data) { JSON.parse(file_fixture('spec/fixtures/datastore.json').read) }
   let(:ds) { Datastore.new data }

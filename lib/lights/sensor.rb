@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 class SensorState < HObject
   attr_reader :last_updated
+
   def initialize(data)
     @last_updated = data["lastupdated"]
     @daylight = data["daylight"]
@@ -16,10 +19,11 @@ class SensorState < HObject
 end
 
 class Sensor < HObject
-  attr_reader :id, :data, :name, :type, :model_id,
-                :manufacturer_name, :unique_id,
-                :sw_version, :state
-  def initialize( id, data = {} )
+  attr_reader :id, :name, :type, :model_id,
+              :manufacturer_name, :unique_id,
+              :sw_version, :state
+
+  def initialize(id, data = {})
     @id = id
     @name = data["name"]
     @type = data["type"]
@@ -30,7 +34,7 @@ class Sensor < HObject
     @config = data["config"]
     @state = SensorState.new(data["state"])
   end
-  
+
   def data
     data = {}
     data["name"] = @name if @name

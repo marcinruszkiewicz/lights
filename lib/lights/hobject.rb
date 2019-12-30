@@ -1,9 +1,9 @@
-class HObject
-  def initialize(*args)
-  end
+# frozen_string_literal: true
 
-  def to_json(options={})
+class HObject
+  def initialize(*args); end
+
+  def to_json(_options = {})
     data.to_json
   end
 end
-

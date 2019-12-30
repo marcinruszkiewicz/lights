@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'lights/hobject'
 
 class Rule < HObject
   attr_reader :id, :name, :owner, :created,
-                :last_triggered, :times_triggered,
-                :status, :conditions, :actions
-  def initialize( id = nil, data = {} )
+              :last_triggered, :times_triggered,
+              :status, :conditions, :actions
+  def initialize(id = nil, data = {})
     @id = id
     @name = data["name"]
     @owner = data["owner"]

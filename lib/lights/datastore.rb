@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'lights/config'
 require 'lights/bulblist'
 require 'lights/grouplist'
@@ -9,9 +11,9 @@ require 'lights/hobject'
 
 class Datastore < HObject
   attr_reader :lights, :groups, :config, :rules,
-                :scenes, :schedules, :sensors
+              :scenes, :schedules, :sensors
   def initialize(data = {})
-    @lights = BulbList.new(data["lights"]) 
+    @lights = BulbList.new(data["lights"])
     @groups = GroupList.new(data["groups"])
     @config = HueConfig.new(data["config"])
     @schedules = ScheduleList.new(data["schedules"])
@@ -32,14 +34,13 @@ class Datastore < HObject
 
   def data
     data = {}
-    data["lights"] = @lights.data if !@lights.data.empty?
-    data["groups"] = @groups.data if !@groups.data.empty?
-    data["config"] = @config.data if !@config.data.empty?
-    data["schedules"] = @schedules.data if !@schedules.data.empty?
-    data["scenes"] = @scenes.data if !@scenes.data.empty?
-    data["rules"] = @rules.data if !@rules.data.empty?
-    data["sensors"] = @sensors.data if !@sensors.data.empty?
+    data["lights"] = @lights.data unless @lights.data.empty?
+    data["groups"] = @groups.data unless @groups.data.empty?
+    data["config"] = @config.data unless @config.data.empty?
+    data["schedules"] = @schedules.data unless @schedules.data.empty?
+    data["scenes"] = @scenes.data unless @scenes.data.empty?
+    data["rules"] = @rules.data unless @rules.data.empty?
+    data["sensors"] = @sensors.data unless @sensors.data.empty?
     data
   end
 end
-

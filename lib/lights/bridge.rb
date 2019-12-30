@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'lights/hobject'
 
 class Bridge < HObject
-
   attr_reader :id, :ip, :name, :mac
   def initialize(data = {})
     @id = data["id"]
@@ -19,4 +20,3 @@ class Bridge < HObject
     data
   end
 end
-

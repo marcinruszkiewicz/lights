@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'lights/hobject'
 
 class Scene < HObject
   attr_accessor :id, :name, :active, :lights, :recycle, :transition_time
-  def initialize(id = nil,data = {})
+  def initialize(id = nil, data = {})
     @id = id
     @name = data["name"]
     @active = data["active"]
@@ -21,4 +23,3 @@ class Scene < HObject
     data
   end
 end
-

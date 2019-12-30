@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'lights/command'
 require 'lights/hobject'
 
 class Schedule < HObject
   attr_reader :id, :name, :time, :status,
-                :description, :local_time,
-                :created, :command
-  def initialize(id,data = {})
+              :description, :local_time,
+              :created, :command
+  def initialize(id, data = {})
     @id = id
     @name = data["name"]
     @time = data["time"]
@@ -32,4 +34,3 @@ class Schedule < HObject
     data
   end
 end
-

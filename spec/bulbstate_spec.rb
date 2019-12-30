@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 describe BulbState do
   let(:blank_state) { BulbState.new }
 
@@ -25,7 +27,7 @@ describe BulbState do
     end
 
     it "raises exception when on has invalid type" do
-      expect { blank_state.on = "test state" }.to raise_error
+      expect { blank_state.on = "test state" }.to raise_error BulbStateValueTypeException
     end
   end
 
