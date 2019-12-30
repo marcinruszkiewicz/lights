@@ -1,23 +1,22 @@
-require 'lights'
-
 describe Scene do
+  let(:data) do
+    {
+      "name" => "test name",
+      "lights" => ["1", "2", "3"],
+      "active" => true
+    }
+  end
+  let(:scene) { Scene.new 1, data }
+
   it "properly parse input parameters" do
-    data = { "name" => "test name",
-             "lights" => ["1","2","3"],
-             "active" => true }
-    scene = Scene.new(1,data)
-    scene.name.should eql "test name"
-    scene.id.should eql 1
-    scene.lights.should eql ["1","2","3"]
-    scene.active.should eql true
+    expect(scene.name).to eql "test name"
+    expect(scene.id).to eql 1
+    expect(scene.lights).to eql ["1","2","3"]
+    expect(scene.active).to eql true
   end
 
   it "properly reconstucts object hash" do
-    data = { "name" => "test name",
-             "lights" => ["1","2","3"],
-             "active" => true }
-    scene = Scene.new(1,data) 
-    scene.data.should eql data
-    scene.id.should eql 1
+    expect(scene.data).to eql data
+    expect(scene.id).to eql 1
   end
 end

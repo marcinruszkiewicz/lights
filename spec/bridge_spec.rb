@@ -1,28 +1,22 @@
-require 'lights'
-
 describe Bridge do
-  it "properly parse input parameters" do
-    data = { 
+  let(:data) do
+    {
       "id" => "test id",
       "internalipaddress" => "192.168.1.27",
       "macaddress" => "01:23:45:67:89:AB",
-      "name" => "test name",
+      "name" => "test name"
     }
-    bridge = Bridge.new(data)
-    bridge.id.should eql "test id"
-    bridge.ip.should eql "192.168.1.27"
-    bridge.mac.should eql "01:23:45:67:89:AB"
-    bridge.name.should eql "test name" 
+  end
+  let(:bridge) { Bridge.new data }
+
+  it "properly parse input parameters" do
+    expect(bridge.id).to eql "test id"
+    expect(bridge.ip).to eql "192.168.1.27"
+    expect(bridge.mac).to eql "01:23:45:67:89:AB"
+    expect(bridge.name).to eql "test name"
   end
 
   it "properly reconstructs object hash" do
-    data = {
-      "id" => "test id",
-      "internalipaddress" => "192.168.1.27",
-      "macaddress" => "01:23:45:67:89:AB",
-      "name" => "test name",
-    }
-    bridge = Bridge.new(data)
-    bridge.data.should eql data
+    expect(bridge.data).to eql data
   end
 end

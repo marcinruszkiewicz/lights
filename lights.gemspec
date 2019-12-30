@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.summary       = "lights"
   s.homepage      = 'http://rubygems.org/gems/lights'
   s.license       = 'MIT'
-  s.date          = Date.today.to_s
 
   s.files         = `git ls-files`.split($/)
   s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
@@ -21,9 +20,9 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "simpletable", "~> 0.3.2"
 
-  s.add_development_dependency "bundler", "~> 1.3"
+  s.add_development_dependency "bundler"
   s.add_development_dependency "rake"
-  s.add_development_dependency "rspec", "~> 2.6"
+  s.add_development_dependency "rspec"
   s.add_development_dependency "cucumber"
   s.add_development_dependency "aruba"
 end

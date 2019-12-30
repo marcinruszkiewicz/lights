@@ -40,12 +40,12 @@ class BulbState < HObject
     RED = 65535
   end
 
-  attr_reader :on, :bri, :hue, :sat, :xy, :ct,  
-              :alert, :effect, :color_mode, 
+  attr_reader :on, :bri, :hue, :sat, :xy, :ct,
+              :alert, :effect, :color_mode,
               :reachable, :transition_time
-  def initialize( data = {} ) 
+  def initialize( data = {} )
     data = {} if data == nil
-    @reachable = data["reachable"] 
+    @reachable = data["reachable"]
 
     # bridge returns invaild values for state variables when reachable is false
     unless @reachable == false
@@ -61,7 +61,7 @@ class BulbState < HObject
       set_transition_time data["transitiontime"]
     end
   end
- 
+
   def color_mode=(value) set_color_mode(value) end
   def set_color_mode(value)
     if value.nil? || value == ColorMode::XY \
@@ -102,15 +102,17 @@ class BulbState < HObject
       raise BulbStateValueTypeException, "On value has incorrect type. Requires boolean, got #{value.class}. Was #{value.inspect}"
     end
   end
- 
+
   def bri=(value); set_bri(value) end
   def set_bri(value)
-    if value.nil? || value.between?(MIN_BRI,MAX_BRI)
+    if !value.nil? && (!value.is_a? Integer)
+      raise BulbStateValueTypeException, "Brightness value has incorrect type. Requires integer, got #{value.class}"
+    elsif value.nil? || value.between?(MIN_BRI,MAX_BRI)
       @bri = value
     else
       raise BulbStateValueOutOfRangeException, "Brightness value out of range. Must be [#{MIN_BRI},#{MAX_BRI}]. Was #{value.inspect}"
     end
-  end 
+  end
 
   def ct=(value); set_ct(value) end
   def set_ct(value)
@@ -122,7 +124,7 @@ class BulbState < HObject
       raise BulbStateValueOutOfRangeException, "Color temperature value out of range. Must be [#{MIN_CT},#{MAX_CT}]. Was #{value.inspect}"
     end
   end
-  
+
   def sat=(value); set_sat(value) end
   def set_sat(value)
     if !value.nil? && (!value.is_a? Integer)
@@ -133,7 +135,7 @@ class BulbState < HObject
       raise BulbStateValueOutOfRangeException, "Saturation alue out of range. Must be [#{MIN_SAT},#{MAX_SAT}]. Was #{value.inspect}"
     end
   end
- 
+
   def hue=(value); set_hue(value) end
   def set_hue(value)
     if !value.nil? && (!value.is_a? Integer)
@@ -154,7 +156,7 @@ class BulbState < HObject
     else
       raise BulbStateValueOutOfRangeException, "Transition time value out of range. Must be > #{MIN_TRANSITION_TIME}. Was #{value.inspect}"
     end
-  end  
+  end
 
   def xy=(value); set_xy(value) end
   def set_xy(value)
@@ -174,20 +176,20 @@ class BulbState < HObject
     end
   end
 
-  def data 
+  def data
     data = {}
     data["on"] = @on unless @on.nil?
-    data["bri"] = @bri if @bri 
-    data["hue"] = @hue if @hue 
-    data["sat"] = @sat if @sat 
-    data["xy"] = @xy if @xy 
-    data["ct"] = @ct if @ct 
-    data["alert"] = @alert if @alert 
-    data["effect"] = @effect if @effect 
-    data["colormode"] = @color_mode if @color_mode 
+    data["bri"] = @bri if @bri
+    data["hue"] = @hue if @hue
+    data["sat"] = @sat if @sat
+    data["xy"] = @xy if @xy
+    data["ct"] = @ct if @ct
+    data["alert"] = @alert if @alert
+    data["effect"] = @effect if @effect
+    data["colormode"] = @color_mode if @color_mode
     data["reachable"] = @reachable unless @reachable.nil?
     data["transitiontime"] = @transition_time if @transition_time
-    data 
-  end 
+    data
+  end
 end
 
